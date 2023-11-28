@@ -2,7 +2,7 @@
  * File          : GUI.java
  * Author        : Charis Charitsis
  * Creation Date : 3 November 2020
- * Last Modified : 25 November 2023
+ * Last Modified : 27 November 2023
  */
 package app;
 
@@ -30,8 +30,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 // Import custom classes
 import exception.ErrorException;
 import gui.BrowsePanel;
@@ -193,26 +191,12 @@ public class GUI extends JFrame
         centerPanel.add(controlPanel, BorderLayout.PAGE_START);
         
         // 2) Main Panel
+        // The height of the main panel is the window height after we subtract
+        // the control panel height (approx. equal to the button height) 
+        int mainPanelHeight = (int) (WINDOW_HEIGHT - BUTTON_SIZE.getHeight());
         Dimension mainPanelSize = new Dimension(MAIN_PANEL_WIDTH,
-                                                WINDOW_HEIGHT);
-        DocumentListener documentListener = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                //sourceCodeChanged();
-            }
-            
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                //sourceCodeChanged();
-            }
-            
-            @Override
-            public void changedUpdate(DocumentEvent e) { // No text change
-            }
-        };
-        mainPanel = new SplitPanel(mainPanelSize,
-                                   BACKGROUND_COLOR,
-                                   documentListener);
+                                                mainPanelHeight);
+        mainPanel = new SplitPanel(mainPanelSize, BACKGROUND_COLOR);
         centerPanel.add(mainPanel, BorderLayout.CENTER);
         centerPanel.setPreferredSize(mainPanelSize);
         centerPanel.setMaximumSize(mainPanelSize);

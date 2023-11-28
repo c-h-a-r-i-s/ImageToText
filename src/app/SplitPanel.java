@@ -2,7 +2,7 @@
  * File          : SplitPanel.java
  * Author        : Charis Charitsis
  * Creation Date : 16 November 2020
- * Last Modified : 25 September 2021
+ * Last Modified : 27 November 2023
  */
 package app;
 
@@ -16,7 +16,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.event.DocumentListener;
 // Import custom classes
 import gui.ImagePanel;
 import gui.ScrollableTextPanel;
@@ -43,11 +42,13 @@ public class SplitPanel extends JPanel
     //   P   R   I   V   A   T   E       C   O   N   S   T   A   N   T   S   //
     // --------------------------------------------------------------------- //
     /** The line number column background color */
-    private static final Color LINE_COLUMN_COLOR = new Color(200, 210, 240);
+    private static final Color  LINE_COLUMN_COLOR  = new Color(200, 210, 240);
     /** The text font for the text panel */
-    private static final Font  TEXT_PANEL_FONT   = new Font("Courier New",
-                                                            Font.PLAIN,
-                                                            12);
+    private static final Font   TEXT_PANEL_FONT    = new Font("Courier New",
+                                                              Font.PLAIN,
+                                                              12);
+    /** Scaling the image height to 75% to fit */
+    private static final double IMAGE_HEIGHT_SCALE = 0.75;
     
     // --------------------------------------------------------------------- //
     //   P   R   I   V   A   T   E       V   A   R   I   A   B   L   E   S   //
@@ -70,21 +71,17 @@ public class SplitPanel extends JPanel
      * 
      * @param size The size of the panel
      * @param backgroundColor The background color
-     * @param documentListener The modules that receive notifications of text
-     *                         changes or {@code null} to prevent sending
-     *                         notifications on text changes
      */
-    protected SplitPanel(Dimension        size,
-                         Color            backgroundColor,
-                         DocumentListener documentListener) {
+    protected SplitPanel(Dimension size,
+                         Color     backgroundColor) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(backgroundColor);
         
         // Text Panel
-        //int textPanelWidth  = MathUtil.round(size.getWidth() / 2, 0).intValue();
-        int textPanelHeight = MathUtil.round(size.getHeight()/ 2, 0).intValue();
+        int textPanelHeight = MathUtil.round(size.getHeight()/ 2.5, 0)
+                                      .intValue();
         
-        textPanel = new ScrollableTextPanel(TEXT_PANEL_FONT, documentListener);
+        textPanel = new ScrollableTextPanel(TEXT_PANEL_FONT, null);
         textPanel.setEditable(false);
         textPanel.setLineDisplayBackground(LINE_COLUMN_COLOR);
         textPanel.setMaximumSize(new Dimension((int)size.getWidth(),
@@ -92,10 +89,11 @@ public class SplitPanel extends JPanel
         add(textPanel);
         
         // Image Panel
-        //int imagePanelWidth  = (int) size.getWidth() - textPanelWidth;
         int imagePanelHeight = (int) size.getHeight() - textPanelHeight;
+        int imageHeight =
+           MathUtil.round(IMAGE_HEIGHT_SCALE * imagePanelHeight, 0).intValue();
         imagePanel = new ImagePanel(new Dimension((int)size.getWidth(),
-                                                  imagePanelHeight));
+                                                  imageHeight));
         imagePanel.setBackground(BACKGROUND_COLOR);
         add(imagePanel);
     }
