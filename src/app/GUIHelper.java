@@ -2,7 +2,7 @@
  * File          : GUIHelper.java
  * Author        : Charis Charitsis
  * Creation Date : 16 November 2020
- * Last Modified : 25 November 2023
+ * Last Modified : 28 November 2023
  */
 package app;
 
@@ -16,7 +16,7 @@ import util.filesystem.DirectoryUtil;
 import util.io.FileIOUtil;
 import static constants.Constants.IMAGE_EXTENSIONS;
 // Import constants
-import static constants.Constants.IMAGE_TEXT_EXT;
+import static constants.Constants.OCR_EXT;
 import static constants.Literals.DOT;
 
 /**
@@ -47,7 +47,7 @@ public class GUIHelper
         // Replace the extension with .ocr
         int extIndex = pathname.lastIndexOf(DOT);
         if (extIndex != -1) {
-            pathname = pathname.substring(0, extIndex) + IMAGE_TEXT_EXT;
+            pathname = pathname.substring(0, extIndex) + OCR_EXT;
             File imageTextFile = new File(pathname);
             if (imageTextFile.exists()) {
                 return imageTextFile;
@@ -95,7 +95,7 @@ public class GUIHelper
         // Replace the extension with .ocr
         int extIndex = pathname.lastIndexOf(DOT);
         if (extIndex != -1) {
-            pathname = pathname.substring(0, extIndex) + IMAGE_TEXT_EXT;
+            pathname = pathname.substring(0, extIndex) + OCR_EXT;
             FileIOUtil.writeFile(pathname,
                                  imageText,
                                  false); // append
