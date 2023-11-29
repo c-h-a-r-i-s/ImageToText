@@ -2,7 +2,7 @@
  * File          : Constants.java
  * Author        : Charis Charitsis
  * Creation Date : 16 June 2013
- * Last Modified : 25 November 2023
+ * Last Modified : 28 November 2023
  */
 package constants;
 
@@ -42,10 +42,15 @@ public class Constants
                                                                         != null;
     /** The extensions of the images to process */
     public static final String[] IMAGE_EXTENSIONS  = new String[] {
-                                                             ".png"
+                                                             ".png",
+                                                             ".jpeg",
+                                                             ".bmp",
+                                                             ".gif",
+                                                             ".tiff",
+                                                             ".jfif"
                                                      };
     /** The extension of the files with the recognized text */
-    public static final String   IMAGE_TEXT_EXT    = ".ocr";
+    public static final String   OCR_EXT           = ".ocr";
     /**
      * Array with the Java language reserved keywords
      */
