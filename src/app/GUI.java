@@ -2,7 +2,7 @@
  * File          : GUI.java
  * Author        : Charis Charitsis
  * Creation Date : 3 November 2020
- * Last Modified : 27 November 2023
+ * Last Modified : 28 November 2023
  */
 package app;
 
@@ -115,11 +115,10 @@ public class GUI extends JFrame
     private ImageFileTree      fileTree;
     /** The control to process the images in the selected directory */
     private OnOffSwitchPanel   processDirSwitch;
-    /** Module to visually display the progress of a task towards completion */
-    private ProgressPanel      progressPanel;
+    /** Module to visually display the OCR analysis progress */
+    private ProgressPanel      ocrProgressPanel;
     /** The button to save the image text to the corresponding .ocr file */
     private JButton            saveOCRFileButton;
-    
     /** Worker thread that analyzes an image directory */
     private Thread             workerThread;
     
@@ -196,7 +195,8 @@ public class GUI extends JFrame
         int mainPanelHeight = (int) (WINDOW_HEIGHT - BUTTON_SIZE.getHeight());
         Dimension mainPanelSize = new Dimension(MAIN_PANEL_WIDTH,
                                                 mainPanelHeight);
-        mainPanel = new SplitPanel(mainPanelSize, BACKGROUND_COLOR);
+        mainPanel = new SplitPanel(mainPanelSize,
+                                   BACKGROUND_COLOR);
         centerPanel.add(mainPanel, BorderLayout.CENTER);
         centerPanel.setPreferredSize(mainPanelSize);
         centerPanel.setMaximumSize(mainPanelSize);
@@ -335,9 +335,9 @@ public class GUI extends JFrame
         JPanel resultPanel = new JPanel();
         resultPanel.setLayout(new BoxLayout(resultPanel, BoxLayout.X_AXIS));
         
-        // ----------------------------------------------------------- //
-        //   Switch to start / stop processing the selected directory  //
-        // ----------------------------------------------------------- //
+        // ---------------------------------------------------------------- //
+        //   Switch to start/stop OCR processing in the selected directory  //
+        // ---------------------------------------------------------------- //
         ActionListener onActionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { // Start analysis
@@ -371,23 +371,23 @@ public class GUI extends JFrame
         processDirSwitch.setBackground(BACKGROUND_COLOR);
         processDirSwitch.setMaximumSize(DIR_ANALYSIS_PANEL_SIZE);
         
-        // -------------- //
-        //  Progress Bar  //
-        // -------------- //
-        progressPanel = new ProgressPanel(PROGRESS_BAR_SIZE);
-        progressPanel.setBackground(BACKGROUND_COLOR);
-        processDirSwitch.add(progressPanel);
+        // ------------------ //
+        //  OCR Progress Bar  //
+        // ------------------ //
+        ocrProgressPanel = new ProgressPanel(PROGRESS_BAR_SIZE);
+        ocrProgressPanel.setBackground(BACKGROUND_COLOR);
+        processDirSwitch.add(ocrProgressPanel);
         
         resultPanel.add(processDirSwitch);
         
         
-        // -------------- //
-        //   Save Button  //
-        // -------------- //
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        buttonPanel.setBorder(BorderFactory.createTitledBorder("OCR File"));
-        buttonPanel.setBackground(BACKGROUND_COLOR);
+        // ----------------------- //
+        //   Save OCR File Button  //
+        // ----------------------- //
+        JPanel ocrPanel = new JPanel();
+        ocrPanel.setLayout(new BoxLayout(ocrPanel, BoxLayout.X_AXIS));
+        ocrPanel.setBorder(BorderFactory.createTitledBorder("OCR File"));
+        ocrPanel.setBackground(BACKGROUND_COLOR);
         
         saveOCRFileButton = new JButton("Save", IconUtil.getIcon("save.png"));
         saveOCRFileButton.setPreferredSize(BUTTON_SIZE);
@@ -408,15 +408,8 @@ public class GUI extends JFrame
             }
         });
         saveOCRFileButton.setEnabled(false); // By default: disabled
-        buttonPanel.add(saveOCRFileButton);
-        
-        resultPanel.add(buttonPanel);
-        
-        
-        
-        // ---------------------- //
-        //   Export XML  Button   //
-        // ---------------------- //
+        ocrPanel.add(saveOCRFileButton);
+        resultPanel.add(ocrPanel);
         
         return resultPanel;
     }
@@ -462,7 +455,7 @@ public class GUI extends JFrame
         fileTreePanel.removeAll();
         mainPanel.clear();
         processDirSwitch.disableButtons();
-        progressPanel.setVisible(false);
+        ocrProgressPanel.setVisible(false);
         validate();
     }
     
@@ -516,7 +509,7 @@ public class GUI extends JFrame
         
         // Kick off the thread that tries to process the images
         final double percent = 100.0 / imagesToProcess.size();
-        progressPanel.reset(true); // Show the progress bar with a value of 0%
+        ocrProgressPanel.reset(true); // Show the progress bar with a value of 0%
         
         workerThread = new Thread() {
             @Override
@@ -535,10 +528,10 @@ public class GUI extends JFrame
                     count++;
                     
                     int progressValue = (int)Math.round(count * percent);
-                    progressPanel.setValue(progressValue);
+                    ocrProgressPanel.setValue(progressValue);
                     
                     if (isInterrupted()) {
-                        progressPanel.reset(false); // Reset + hide progress bar
+                        ocrProgressPanel.reset(false); // Reset + hide progress bar
                         return;
                     }
                 }
@@ -548,7 +541,7 @@ public class GUI extends JFrame
                     public void run() {
                         processDirSwitch.unlockButtons();
                         processDirSwitch.disableButtons();
-                        progressPanel.setVisible(false);
+                        ocrProgressPanel.setVisible(false);
                     }
                 });
             }
