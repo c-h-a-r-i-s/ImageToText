@@ -5,6 +5,7 @@
     <img align="left" alt="Delve" width="40px" src="https://github.com/c-h-a-r-i-s/resources/blob/main/images/image-to-text/image-to-text.png"/>Image-to-Text
 </h1>
 Image-to-Text is an GUI application in Java that extracts the text from images (OCR).
+<br><br>
 
 ![Image-to-Text Screen Shot #1][image-to-text-screenshot-1]
 ![Image-to-Text Screen Shot #2][image-to-text-screenshot-2]
@@ -13,7 +14,7 @@ Image-to-Text is an GUI application in Java that extracts the text from images (
 
 <p align="center">
     <a href=https://www.youtube.com/watch?v=29GRbcnm3e4>
-        <img align="center" alt="video icon" width="256px" src="https://github.com/c-h-a-r-i-s/resources/blob/main/images/profile/video.png"/>
+        <img align="center" alt="video icon" width="256px" src="https://github.com/c-h-a-r-i-s/resources/blob/main/images/image-to-text/you_tube_thumbnail.png"/>
     </a>
     <br>
     <h3 align="center">Demo</h3>
